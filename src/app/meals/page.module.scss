@@ -1,0 +1,63 @@
+$gradient-orange: linear-gradient(90deg, #f9572a, #ff8a05);
+$gradient-orange-hover: linear-gradient(90deg, #f9572a, #ff9b05);
+$text-color: #ddd6cb;
+$loading-light: #e9e9e9;
+$loading-dark: #b89b84;
+
+.header {
+  gap: 3rem;
+  margin: 3rem auto 5rem auto;
+  width: 90%;
+  max-width: 75rem;
+  color: $text-color;
+  font-size: 1.5rem;
+
+  & h1 {
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  & p {
+    margin: 0;
+  }
+}
+
+.highlight {
+  background: $gradient-orange;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cta {
+  & a {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background: $gradient-orange-hover;
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+
+    &:hover {
+      background: $gradient-orange;
+    }
+  }
+}
+
+.loading {
+  text-align: center;
+  animation: loading 1.2s ease-in-out infinite;
+}
+
+@keyframes loading {
+  0% {
+    color: $loading-light;
+  }
+  50% {
+    color: $loading-dark;
+  }
+  100% {
+    color: $loading-light;
+  }
+}
