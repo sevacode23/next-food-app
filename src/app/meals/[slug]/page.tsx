@@ -1,19 +1,33 @@
-import { HomeLink } from '@/components/home-link';
+import { notFound } from 'next/navigation';
+
 import { TPropsParam } from '@/typings';
+import { getMealBySlug } from '@/lib/db';
+
+import { MealDetailsHeader, MealDetailsInstructions } from './components';
 
 const Meal = async (props: TPropsParam<'slug'>) => {
   const { params } = props;
 
   const slug = (await params).slug;
 
+  const meal = getMealBySlug(slug);
+
+  if (!meal) {
+    notFound();
+  }
+
   return (
-    <div>
-      <h1>Meal</h1>
+    <>
+      <MealDetailsHeader
+        title={meal.title}
+        creator={meal.creator}
+        creatorEmail={meal.creatorEmail}
+        summary={meal.summary}
+        image={meal.image}
+      />
 
-      <p>{slug}</p>
-
-      <HomeLink />
-    </div>
+      <MealDetailsInstructions instructions={meal.instructions} />
+    </>
   );
 };
 

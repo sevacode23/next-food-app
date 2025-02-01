@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db": "tsx init-db.ts"
+    "db": "tsx src/lib/db/init-db.ts"
   },
   "dependencies": {
     "better-sqlite3": "^11.8.1",

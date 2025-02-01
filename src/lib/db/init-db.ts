@@ -1,6 +1,8 @@
 import sql from 'better-sqlite3';
 
-const db = sql('./api/meals.db');
+import { DB_PATH } from './db.constants';
+
+const db = sql(DB_PATH);
 
 const dummyMeals = [
   {

@@ -4,5 +4,7 @@ export interface IMeal {
   title: string;
   summary: string;
   creator: string;
+  creatorEmail: string;
   image: string;
+  instructions: string;
 }

@@ -1,4 +1,4 @@
-import { IMeal } from 'models/meal.model';
+import { IMeal } from '@/typings/models/meal.model';
 
 import { MealItem } from '../meal-item';
 

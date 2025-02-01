@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { IMeal } from 'models/meal.model';
+import { IMeal } from '@/typings/models/meal.model';
 
 import classes from './meal-item.module.scss';
 

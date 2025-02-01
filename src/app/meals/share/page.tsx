@@ -1,13 +1,20 @@
-import { HomeLink } from '@/components/home-link';
+import { MealsShareForm } from './components';
 
-const MealsShare = () => {
+import classes from './page.module.scss';
+
+export default function MealsSharePage() {
   return (
     <>
-      <h1>Meals Share</h1>
+      <header className={classes.header}>
+        <h1>
+          Share your <span className={classes.highlight}>favorite meal</span>
+        </h1>
+        <p>Or any other meal you feel needs sharing!</p>
+      </header>
 
-      <HomeLink />
+      <main className={classes.main}>
+        <MealsShareForm />
+      </main>
     </>
   );
-};
-
-export default MealsShare;
+}

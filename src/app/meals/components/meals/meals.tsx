@@ -1,9 +1,9 @@
-import { getMeals } from 'server/meals';
+import { getMeals } from '@/lib/db';
 
 import { MealsGrid } from '../meals-grid';
 
-export const Meals = () => {
-  const meals = getMeals();
+export const Meals = async () => {
+  const meals = await getMeals();
 
   return (
     <main>
