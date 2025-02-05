@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 
+import { mealsRepository } from '@/lib/db';
 import { TPropsParam } from '@/typings';
-import { getMealBySlug } from '@/lib/db';
 
 import { MealDetailsHeader, MealDetailsInstructions } from './components';
 
@@ -10,7 +10,7 @@ const Meal = async (props: TPropsParam<'slug'>) => {
 
   const slug = (await params).slug;
 
-  const meal = getMealBySlug(slug);
+  const meal = mealsRepository.getBySlug(slug);
 
   if (!meal) {
     notFound();

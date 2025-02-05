@@ -1,17 +1,40 @@
-import sql from 'better-sqlite3';
+import { Database } from 'better-sqlite3';
 
-import { IMeal } from '@/typings/models/meal.model';
+import { IMeal } from '@/typings/models';
 
-import { DB_PATH } from './db.constants';
+import { sqlDB } from './db';
 
-const db = sql(DB_PATH);
+export class MealsRepository {
+  public constructor(private db: Database) {}
 
-export const getMeals = () => {
-  return db.prepare<unknown[], IMeal>('SELECT * FROM meals').all();
-};
+  public getAll() {
+    const stmt = this.db.prepare<unknown[], IMeal>('SELECT * FROM meals');
+    return stmt.all();
+  }
 
-export const getMealBySlug = (slug: string) => {
-  return db
-    .prepare<string, IMeal>('SELECT * FROM meals WHERE slug = ?')
-    .get(slug);
-};
+  public getBySlug(slug: string) {
+    const stmt = this.db.prepare<string, IMeal>(
+      'SELECT * FROM meals WHERE slug = ?'
+    );
+    return stmt.get(slug);
+  }
+
+  public create(meal: IMeal) {
+    const stmt = this.db.prepare(`
+      INSERT INTO meals
+        (slug, title, summary, instructions, image, creator, creator_email)
+      VALUES (
+        @slug,
+        @title, 
+        @summary, 
+        @instructions,
+        @image,
+        @creator,
+        @creatorEmail
+      )`);
+
+    return stmt.run(meal);
+  }
+}
+
+export const mealsRepository = new MealsRepository(sqlDB);

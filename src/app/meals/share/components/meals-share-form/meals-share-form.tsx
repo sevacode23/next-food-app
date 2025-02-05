@@ -11,8 +11,8 @@ export const MealsShareForm = () => {
     <form className={classes.form} action={shareMeal}>
       <div className={classes.row}>
         <p>
-          <label htmlFor="name">Your name</label>
-          <input type="text" id="name" name="name" required />
+          <label htmlFor="creator">Your name</label>
+          <input type="text" id="creator" name="creator" required />
         </p>
 
         <p>
