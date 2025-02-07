@@ -1,14 +1,20 @@
 'use client';
 
+import { useFormAction } from '@/hooks';
 import { shareMeal } from '@/lib/actions';
 
 import { MealsShareImagePicker } from '../meals-share-image-picker';
+import { MealsShareSubmit } from '../meals-share-submit';
 
 import classes from './meals-share-form.module.scss';
 
 export const MealsShareForm = () => {
+  const { error, onSubmit } = useFormAction(shareMeal);
+
+  const RenderError = error ? <p>{error.message}</p> : null;
+
   return (
-    <form className={classes.form} action={shareMeal}>
+    <form className={classes.form} onSubmit={onSubmit}>
       <div className={classes.row}>
         <p>
           <label htmlFor="creator">Your name</label>
@@ -43,8 +49,10 @@ export const MealsShareForm = () => {
 
       <MealsShareImagePicker name="image" label="Image" />
 
+      {RenderError}
+
       <p className={classes.actions}>
-        <button type="submit">Share Meal</button>
+        <MealsShareSubmit />
       </p>
     </form>
   );

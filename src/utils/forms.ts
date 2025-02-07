@@ -21,3 +21,6 @@ export const createFormDataParser = (formData: FormData) => {
 
   return { getField, getFile };
 };
+
+export const checkValidField = (str: string | undefined) =>
+  str && str.trim() !== '';

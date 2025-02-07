@@ -3,6 +3,7 @@ import { IMeal } from '@/typings/models';
 
 import { slugifyString, xssString } from './strings';
 import { writePublicImage } from './images';
+import { checkValidField } from './forms';
 
 const getMealImageName = (image: File, slug: string) => {
   const extension = image.name.split('.').pop();
@@ -35,3 +36,13 @@ export const getMealFromInput = async (
     image,
   };
 };
+
+export const checkValidCreateMeal = (createMeal: TCreateMeal) =>
+  checkValidField(createMeal.title) &&
+  checkValidField(createMeal.summary) &&
+  checkValidField(createMeal.instructions) &&
+  checkValidField(createMeal.creator) &&
+  checkValidField(createMeal.creatorEmail) &&
+  createMeal.creatorEmail.includes('@') &&
+  createMeal.image &&
+  createMeal.image.size > 0;

@@ -2,9 +2,13 @@
 
 import { redirect } from 'next/navigation';
 
-import { createFormDataParser, getMealFromInput } from '@/utils';
+import {
+  checkValidCreateMeal,
+  createFormDataParser,
+  getMealFromInput,
+} from '@/utils';
 import { ROUTES } from '@/const';
-import { TCreateMeal } from '@/typings';
+import { IActionState, TCreateMeal } from '@/typings';
 
 import { mealsRepository } from '../db';
 
@@ -19,6 +23,14 @@ export const shareMeal = async (formData: FormData) => {
     creator: parser.getField('creator'),
     creatorEmail: parser.getField('email'),
   };
+
+  if (!checkValidCreateMeal(data)) {
+    const action: IActionState = {
+      error: { message: 'Invalid meal data' },
+    };
+
+    return action;
+  }
 
   const meal = await getMealFromInput(data);
 
