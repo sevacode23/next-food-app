@@ -1,9 +1,27 @@
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { mealsRepository } from '@/lib/db';
 import { TPropsParam } from '@/typings';
 
 import { MealDetailsHeader, MealDetailsInstructions } from './components';
+
+export async function generateMetadata(
+  props: TPropsParam<'slug'>
+): Promise<Metadata> {
+  const { params } = props;
+
+  const meal = mealsRepository.getBySlug((await params).slug);
+
+  if (!meal) {
+    notFound();
+  }
+
+  return {
+    title: meal.title,
+    description: meal.summary,
+  };
+}
 
 const Meal = async (props: TPropsParam<'slug'>) => {
   const { params } = props;
