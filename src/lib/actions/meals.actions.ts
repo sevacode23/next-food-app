@@ -1,6 +1,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
 import {
   checkValidCreateMeal,
@@ -35,6 +36,8 @@ export const shareMeal = async (formData: FormData) => {
   const meal = await getMealFromInput(data);
 
   mealsRepository.create(meal);
+
+  revalidatePath(ROUTES.MEALS, 'page');
 
   redirect(ROUTES.MEALS);
 };
