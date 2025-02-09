@@ -1,12 +1,14 @@
 'use client';
 
 import { startTransition, useState } from 'react';
+import { isRedirectError } from 'next/dist/client/components/redirect';
+import { isNotFoundError } from 'next/dist/client/components/not-found';
 
 import { IActionError, IActionState } from '@/typings';
 
 export const useFormAction = <
   R extends IActionState,
-  A extends (formData: FormData) => Promise<R> | R,
+  A extends (formData: FormData) => Promise<R | undefined> | (R | undefined),
 >(
   action: A
 ) => {
@@ -21,10 +23,15 @@ export const useFormAction = <
       try {
         const result = await action(formData);
 
-        if (result.error) {
-          setError(result.error);
+        if (result?.error) {
+          return setError(result.error);
         }
-      } catch (err) {
+      } catch (err: unknown) {
+        if (isRedirectError(err) || isNotFoundError(err)) {
+          throw err;
+        }
+
+        setError({ message: (err as Error).message });
         console.error(err);
       }
     });
