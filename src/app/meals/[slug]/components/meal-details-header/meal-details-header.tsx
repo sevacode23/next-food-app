@@ -1,7 +1,6 @@
-import Image from 'next/image';
+import { MealImage } from '@/components/meal-image';
 
 import classes from './meal-details-header.module.scss';
-
 interface IProps {
   title: string;
   creator: string;
@@ -16,7 +15,7 @@ export const MealDetailsHeader = (props: IProps) => {
   return (
     <header className={classes.root}>
       <div className={classes.image}>
-        <Image src={image} alt={title} fill />
+        <MealImage image={image} alt={title} />
       </div>
 
       <div className={classes.headerText}>

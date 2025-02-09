@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import Image from 'next/image';
 
+import { MealImage } from '@/components/meal-image';
 import { IMeal } from '@/typings/models/meal.model';
 
 import classes from './meal-item.module.scss';
@@ -12,7 +12,7 @@ export const MealItem = (props: IMeal) => {
     <article className={classes.root}>
       <header>
         <div className={classes.image}>
-          <Image src={image} alt={title} fill />
+          <MealImage image={image} alt={title} />
         </div>
 
         <div className={classes.headerText}>

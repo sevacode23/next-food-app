@@ -4,6 +4,8 @@ import { IMeal } from '@/typings/models';
 
 import { sqlDB } from './db';
 
+type TSlug = Pick<IMeal, 'slug'>;
+
 export class MealsRepository {
   public constructor(private db: Database) {}
 
@@ -17,6 +19,16 @@ export class MealsRepository {
       'SELECT * FROM meals WHERE slug = ?'
     );
     return stmt.get(slug);
+  }
+
+  public getAllSlugsBySlugPrefix(prefix: string) {
+    const pattern = `${prefix}%`;
+
+    const stmt = this.db.prepare<string, TSlug>(
+      'SELECT slug FROM meals WHERE slug LIKE ?'
+    );
+
+    return stmt.all(pattern);
   }
 
   public create(meal: IMeal) {

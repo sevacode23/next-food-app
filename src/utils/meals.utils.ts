@@ -1,9 +1,28 @@
+import { mealsRepository } from '@/lib/db';
+import { createS3UserImage } from '@/services/aws';
 import { TCreateMeal } from '@/typings';
 import { IMeal } from '@/typings/models';
 
 import { slugifyString, xssString } from './strings';
-import { writePublicImage } from './images';
 import { checkValidField } from './forms';
+
+const generateUniqueSlug = (title: string) => {
+  const baseSlug = slugifyString(title);
+
+  let uniqueSlug = baseSlug;
+  let counter = 1;
+
+  const existingSlugs = mealsRepository
+    .getAllSlugsBySlugPrefix(baseSlug)
+    .map((mealObj) => mealObj.slug);
+
+  while (existingSlugs.includes(uniqueSlug)) {
+    uniqueSlug = `${baseSlug}-${counter}`;
+    counter++;
+  }
+
+  return uniqueSlug;
+};
 
 const getMealImageName = (image: File, slug: string) => {
   const extension = image.name.split('.').pop();
@@ -12,11 +31,11 @@ const getMealImageName = (image: File, slug: string) => {
 };
 
 const processImage = async (image: File, slug: string) => {
-  const imageName = getMealImageName(image, slug);
+  const fileName = getMealImageName(image, slug);
 
-  const imageUrl = await writePublicImage(image, imageName);
+  await createS3UserImage(image, fileName);
 
-  return imageUrl;
+  return { fileName };
 };
 
 export const getMealFromInput = async (
@@ -24,16 +43,16 @@ export const getMealFromInput = async (
 ): Promise<IMeal> => {
   const instructions = xssString(createMeal.instructions);
 
-  const slug = slugifyString(createMeal.title);
+  const slug = generateUniqueSlug(createMeal.title);
 
-  const image = await processImage(createMeal.image, slug);
+  const { fileName } = await processImage(createMeal.image, slug);
 
   // @ts-expect-error test
   return {
     ...createMeal,
     slug,
     instructions,
-    image,
+    image: fileName,
   };
 };
 
